@@ -25,13 +25,13 @@
   <property name="windowTitle">
    <string>CodeReaderWidget</string>
   </property>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>10</x>
      <y>10</y>
      <width>381</width>
-     <height>94</height>
+     <height>157</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
@@ -40,7 +40,7 @@
       <item>
        <widget class="QLabel" name="seriaNumberLabel">
         <property name="text">
-         <string>Serial Number:</string>
+         <string>QR code content:</string>
         </property>
         <property name="buddy">
          <cstring>serialNumberInput</cstring>
@@ -61,7 +61,7 @@
        </spacer>
       </item>
       <item>
-       <widget class="QLineEdit" name="serialNumberInput"/>
+       <widget class="QPlainTextEdit" name="serialNumberInput"/>
       </item>
      </layout>
     </item>
