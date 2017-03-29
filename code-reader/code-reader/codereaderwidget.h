@@ -16,7 +16,7 @@ public:
     explicit CodeReaderWidget(QWidget *parent = 0);
     ~CodeReaderWidget();
     void connectEventHandlers();
-    void updateOutputLabel(const QString &serialNumber);
+    void updateOutputLabel();
 
 private:
     QRegularExpression* regex;
