@@ -3,9 +3,9 @@
 
 #include <QPlainTextEdit>
 #include <QDebug>
+#include <QPushButton>
 
-const QString CodeReaderWidget::SERIAL_NUMBER_PLACEHOLDER("Not found");
-const QString CodeReaderWidget::SERIAL_NUMBER_TEXT("Serial Number: ");
+const QString CodeReaderWidget::OUTPUT_PLACEHOLDER("Information not found");
 
 CodeReaderWidget::CodeReaderWidget(QWidget *parent) :
     QWidget(parent)
@@ -14,8 +14,18 @@ CodeReaderWidget::CodeReaderWidget(QWidget *parent) :
     setupUi(this);
 
     /* Attributes setup */
-    regex = new QRegularExpression("F[0-9]{8}");
-    serialNumberOuput->setText(SERIAL_NUMBER_TEXT + SERIAL_NUMBER_PLACEHOLDER);
+    serialNumberRegex = new QRegularExpression("F\\d{8}");
+    expirationDateCodeRegex = new QRegularExpression("\\d{4}-\\d{2}");
+    diopterRegex = new QRegularExpression("\\+\\d{2}\\.\\d");
+
+    /* Placeholders */
+    serialNumberOuput->setText(OUTPUT_PLACEHOLDER);
+    expirationDateOutput->setText(OUTPUT_PLACEHOLDER);
+
+    /* Selectable UI elements */
+    serialNumberOuput->setTextInteractionFlags(Qt::TextSelectableByMouse);
+    expirationDateOutput->setTextInteractionFlags(Qt::TextSelectableByMouse);
+    diopterOutput->setTextInteractionFlags(Qt::TextSelectableByMouse);
 
     setWindowTitle("Lens Serial Number Reader");
 
@@ -29,19 +39,40 @@ CodeReaderWidget::~CodeReaderWidget()
 
 void CodeReaderWidget::connectEventHandlers()
 {
-    connect(serialNumberInput, &QPlainTextEdit::textChanged, this, &CodeReaderWidget::updateOutputLabel);
+    connect(qrCodeInput, &QPlainTextEdit::textChanged, this, &CodeReaderWidget::updateOutputLabel);
+    connect(clearBtn, &QPushButton::clicked, this, &CodeReaderWidget::clearQRCodeInput);
+}
+
+void CodeReaderWidget::updateIfRegexMatches(const QRegularExpression* regex, QLabel* outputLabel)
+{
+    const QString input = qrCodeInput->toPlainText();
+    QString match = regex->match(input).captured();
+
+    if (match != NULL)
+    {
+        outputLabel->setText(match);
+    }
+    else
+    {
+        outputLabel->setText(OUTPUT_PLACEHOLDER);
+    }
+}
+
+QString CodeReaderWidget::formatDiopter(QString string)
+{
+    return string.remove(0, 1);
 }
 
 void CodeReaderWidget::updateOutputLabel()
 {
-    QString serialNumberMatch = regex->match(serialNumberInput->toPlainText()).captured();
+    updateIfRegexMatches(serialNumberRegex, serialNumberOuput);
+    updateIfRegexMatches(expirationDateCodeRegex, expirationDateOutput);
 
-    if ( serialNumberMatch != NULL)
-    {
-        serialNumberOuput->setText(SERIAL_NUMBER_TEXT + serialNumberMatch);
-    }
-    else
-    {
-        serialNumberOuput->setText(SERIAL_NUMBER_TEXT + SERIAL_NUMBER_PLACEHOLDER);
-    }
+    QString match = diopterRegex->match(qrCodeInput->toPlainText()).captured();
+    diopterOutput->setText(match != NULL ? match.remove(0, 1) : OUTPUT_PLACEHOLDER);
+}
+
+void CodeReaderWidget::clearQRCodeInput()
+{
+    qrCodeInput->clear();
 }

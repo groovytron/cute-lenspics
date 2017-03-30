@@ -2,6 +2,7 @@
 #define CODEREADERWIDGET_H
 
 #include <QWidget>
+#include <QLabel>
 #include "ui_codereaderwidget.h"
 
 namespace Ui {
@@ -16,12 +17,16 @@ public:
     explicit CodeReaderWidget(QWidget *parent = 0);
     ~CodeReaderWidget();
     void connectEventHandlers();
+    void updateIfRegexMatches(const QRegularExpression* regex, QLabel* outputLabel);
+    QString formatDiopter(QString string);
+public slots:
     void updateOutputLabel();
-
+    void clearQRCodeInput();
 private:
-    QRegularExpression* regex;
-    static const QString SERIAL_NUMBER_PLACEHOLDER;
-    static const QString SERIAL_NUMBER_TEXT;
+    QRegularExpression* serialNumberRegex;
+    QRegularExpression* expirationDateCodeRegex;
+    QRegularExpression* diopterRegex;
+    static const QString OUTPUT_PLACEHOLDER;
 };
 
 #endif // CODEREADERWIDGET_H
