@@ -21,6 +21,7 @@ CodeReaderWidget::CodeReaderWidget(QWidget *parent) :
     /* Placeholders */
     serialNumberOuput->setText(OUTPUT_PLACEHOLDER);
     expirationDateOutput->setText(OUTPUT_PLACEHOLDER);
+    diopterOutput->setText(OUTPUT_PLACEHOLDER);
 
     /* Selectable UI elements */
     serialNumberOuput->setTextInteractionFlags(Qt::TextSelectableByMouse);
@@ -31,6 +32,8 @@ CodeReaderWidget::CodeReaderWidget(QWidget *parent) :
 
     /* Connect signal to slots */
     connectEventHandlers();
+
+    qrCodeInput->setFocus();
 }
 
 CodeReaderWidget::~CodeReaderWidget()
