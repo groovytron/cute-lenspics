@@ -1,6 +1,6 @@
 import sys
 from PyQt5 import QtCore, QtGui, uic
-from PyQt5.QtWidgets import QApplication, QWidget, QListWidgetItem
+from PyQt5.QtWidgets import QApplication, QWidget, QListWidgetItem, QFileDialog
 from PyQt5.QtGui import QImage, QPixmap, QPainter, QFont, QColor
 from PyQt5.QtCore import QTimer, QPoint
 from ui_camera_widget import Ui_Form
@@ -19,10 +19,7 @@ class CameraWidget(QWidget, Ui_Form):
         self.setupUi(self)
         self.init_ui()
         self.connect_signals()
-
-    def closeEvent(self, event):
-        if self.video_process is not None:
-            self.video_process.shutdown()
+        self.set_save_directory()
 
     def init_ui(self):
         self.inputText.setText("Enter a serial number")
@@ -39,6 +36,11 @@ class CameraWidget(QWidget, Ui_Form):
         self.pictureButton.clicked.connect(self.save_picture)
         self.inputText.textChanged.connect(self.update_label)
 
+    def set_save_directory(self):
+        self.save_dir_name = ""
+        self.save_dir_name = str(
+            QFileDialog.getExistingDirectory(self, "Select Directory"))
+
     def check_serial_number(self):
         return re.search('F\d{8}', self.inputText.text())
 
@@ -52,10 +54,6 @@ class CameraWidget(QWidget, Ui_Form):
             self.image_text = "No serial number found"
 
     def set_camera(self, camera_id):
-        if self.video_process is not None:
-            self.video_process.shutdown()
-
-        print('Camera %i has been chosen!' % camera_id)
         self.camera = cv2.VideoCapture(camera_id)
         self.timer = QTimer()
         self.timer.timeout.connect(self.display_video_stream)
@@ -80,7 +78,13 @@ class CameraWidget(QWidget, Ui_Form):
     def save_picture(self):
         match = self.check_serial_number()
         if match is not None:
-            self.imageLabel.pixmap().save(self.image_text + ".png")
+            self.image_text = match.group(0)
+            save_path = self.image_text
+
+            if self.save_dir_name != "":
+                save_path = self.save_dir_name + "/" + self.image_text
+
+            self.imageLabel.pixmap().save(save_path + ".png")
 
     def count_cameras(self):
         max_tested = 10
