@@ -135,22 +135,24 @@ class CameraWidget(QWidget, Ui_CameraWidget):
     def save_picture(self):
         match = self.check_serial_number()
         if match is not None:
-            self.image_text = match.group(0) + ".png"
-            save_path = self.image_text
+            self.image_text = match.group(0)
+            image_name = self.image_text + ".png"
+            save_path = image_name
 
             if self.save_dir_name != "":
-                save_path = self.save_dir_name + "/" + self.image_text
+                save_path = self.save_dir_name + "/" + image_name
 
             file_to_check = QFileInfo(save_path)
 
-            if file_to_check.exists():
-
+            if file_to_check.exists() and file_to_check.isFile():
                 reply = QMessageBox.question(
                     self, 'File already exists',
                     'This file already exists. Do you want to overwrite it?',
                     QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
 
                 if reply == QMessageBox.No:
+                    self.main_window.statusBar().showMessage(
+                        'Save canceled for lens %s' % match.group(0))
                     return
 
             self.imageLabel.pixmap().save(save_path)
