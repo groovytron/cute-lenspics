@@ -4,7 +4,5 @@ from lens_photomaton.widgets import MainWindow
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    #widget = CameraWidget()
-    #widget.show()
     window = MainWindow()
     sys.exit(app.exec_())

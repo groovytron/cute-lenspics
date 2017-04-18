@@ -1,5 +1,6 @@
 from PyQt5 import QtCore, QtGui, uic
-from PyQt5.QtWidgets import QMainWindow, QWidget, QListWidgetItem, QFileDialog, QAction, qApp
+from PyQt5.QtWidgets import (QMainWindow, QWidget, QListWidgetItem,
+                             QFileDialog, QAction, qApp)
 from PyQt5.QtGui import QImage, QPixmap, QPainter, QFont, QColor, QIcon
 from PyQt5.QtCore import QTimer, QPoint
 import cv2
@@ -75,10 +76,10 @@ class CameraWidget(QWidget, Ui_CameraWidget):
     def set_save_directory(self):
         self.save_dir_name = str(
             QFileDialog.getExistingDirectory(self, "Select Directory"))
+        self.cameraList.setEnabled(True)
         self.update_controls()
 
     def update_controls(self):
-        self.cameraList.setEnabled(not self.cameraList.isEnabled())
         self.pictureButton.setEnabled(self.cameraList.isEnabled())
         self.inputText.setEnabled(self.cameraList.isEnabled())
 
