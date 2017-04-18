@@ -2,7 +2,7 @@
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](http://www.gnu.org/licenses/gpl-3.0)
 
-A kind of software suit usable for lens management such as picture taking
+A kind of software suite for lens management such as picture taking
 and QR bar code's information extraction. This suite includes the following
 softwares:
 
