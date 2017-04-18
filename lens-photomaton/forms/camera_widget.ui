@@ -77,6 +77,13 @@
        </layout>
       </item>
       <item>
+       <widget class="QPushButton" name="clearButton">
+        <property name="text">
+         <string>&amp;Clear</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QPushButton" name="pictureButton">
         <property name="text">
          <string>&amp;Take a picture</string>
