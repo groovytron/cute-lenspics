@@ -1,13 +1,13 @@
-#include "codereaderwidget.h"
-#include "ui_codereaderwidget.h"
+#include "QrCodeReaderWidget.h"
+#include "ui_QrCodeReaderWidget.h"
 
 #include <QPlainTextEdit>
 #include <QDebug>
 #include <QPushButton>
 
-const QString CodeReaderWidget::OUTPUT_PLACEHOLDER("Information not found");
+const QString QrCodeReaderWidget::OUTPUT_PLACEHOLDER("Information not found");
 
-CodeReaderWidget::CodeReaderWidget(QWidget *parent) :
+QrCodeReaderWidget::QrCodeReaderWidget(QWidget *parent) :
     QWidget(parent)
 {
     /* Load the form */
@@ -36,17 +36,17 @@ CodeReaderWidget::CodeReaderWidget(QWidget *parent) :
     qrCodeInput->setFocus();
 }
 
-CodeReaderWidget::~CodeReaderWidget()
+QrCodeReaderWidget::~QrCodeReaderWidget()
 {
 }
 
-void CodeReaderWidget::connectEventHandlers()
+void QrCodeReaderWidget::connectEventHandlers()
 {
-    connect(qrCodeInput, &QPlainTextEdit::textChanged, this, &CodeReaderWidget::updateOutputLabel);
-    connect(clearBtn, &QPushButton::clicked, this, &CodeReaderWidget::clearQRCodeInput);
+    connect(qrCodeInput, &QPlainTextEdit::textChanged, this, &QrCodeReaderWidget::updateOutputLabel);
+    connect(clearBtn, &QPushButton::clicked, this, &QrCodeReaderWidget::clearQRCodeInput);
 }
 
-void CodeReaderWidget::updateIfRegexMatches(const QRegularExpression* regex, QLabel* outputLabel)
+void QrCodeReaderWidget::updateIfRegexMatches(const QRegularExpression* regex, QLabel* outputLabel)
 {
     const QString input = qrCodeInput->toPlainText();
     QString match = regex->match(input).captured();
@@ -61,12 +61,12 @@ void CodeReaderWidget::updateIfRegexMatches(const QRegularExpression* regex, QLa
     }
 }
 
-QString CodeReaderWidget::formatDiopter(QString string)
+QString QrCodeReaderWidget::formatDiopter(QString string)
 {
     return string.remove(0, 1);
 }
 
-void CodeReaderWidget::updateOutputLabel()
+void QrCodeReaderWidget::updateOutputLabel()
 {
     updateIfRegexMatches(serialNumberRegex, serialNumberOuput);
     updateIfRegexMatches(expirationDateCodeRegex, expirationDateOutput);
@@ -75,7 +75,7 @@ void CodeReaderWidget::updateOutputLabel()
     diopterOutput->setText(match != NULL ? match.remove(0, 1) : OUTPUT_PLACEHOLDER);
 }
 
-void CodeReaderWidget::clearQRCodeInput()
+void QrCodeReaderWidget::clearQRCodeInput()
 {
     qrCodeInput->clear();
 }

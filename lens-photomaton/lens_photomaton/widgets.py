@@ -1,27 +1,28 @@
-import sys
 from PyQt5 import QtCore, QtGui, uic
-from PyQt5.QtWidgets import QApplication, QWidget, QListWidgetItem, QFileDialog
+from PyQt5.QtWidgets import QWidget, QListWidgetItem, QFileDialog
 from PyQt5.QtGui import QImage, QPixmap, QPainter, QFont, QColor
 from PyQt5.QtCore import QTimer, QPoint
-from ui_camera_widget import Ui_Form
 import cv2
 import re
+from .forms.ui_camera_widget import Ui_CameraWidget
 
-
-class CameraWidget(QWidget, Ui_Form):
+class CameraWidget(QWidget, Ui_CameraWidget):
     def __init__(self):
         super(CameraWidget, self).__init__()
 
         self.camera = None
         self.video_process = None
         self.image_text = "No serial number found"
+        self.save_dir_name = ""
 
         self.setupUi(self)
         self.init_ui()
         self.connect_signals()
-        self.set_save_directory()
+        # self.set_save_directory()
 
     def init_ui(self):
+        # self.cameraList.setEnabled(False)
+        # self.pictureButton.setEnabled(False)
         self.inputText.setText("Enter a serial number")
         self.imageLabel.setText("No camera feed")
 
@@ -37,7 +38,6 @@ class CameraWidget(QWidget, Ui_Form):
         self.inputText.textChanged.connect(self.update_label)
 
     def set_save_directory(self):
-        self.save_dir_name = ""
         self.save_dir_name = str(
             QFileDialog.getExistingDirectory(self, "Select Directory"))
 
@@ -94,10 +94,3 @@ class CameraWidget(QWidget, Ui_Form):
                 temp_camera.release()
                 continue
             return i
-
-
-if __name__ == '__main__':
-    app = QApplication(sys.argv)
-    widget = CameraWidget()
-    widget.show()
-    sys.exit(app.exec_())

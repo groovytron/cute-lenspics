@@ -1,10 +1,10 @@
-#include "codereaderwidget.h"
+#include "QrCodeReaderWidget.h"
 #include <QApplication>
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    CodeReaderWidget w;
+    QrCodeReaderWidget w;
     w.show();
 
     return a.exec();

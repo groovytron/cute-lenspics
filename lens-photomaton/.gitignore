@@ -1,2 +1,3 @@
 ui_*
 !Makefile
+F*.png
