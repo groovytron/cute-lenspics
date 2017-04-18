@@ -1,8 +1,8 @@
 from PyQt5 import QtCore, QtGui, uic
 from PyQt5.QtWidgets import (QMainWindow, QWidget, QListWidgetItem,
-                             QFileDialog, QAction, qApp)
+                             QFileDialog, QAction, qApp, QMessageBox)
 from PyQt5.QtGui import QImage, QPixmap, QPainter, QFont, QColor, QIcon
-from PyQt5.QtCore import QTimer, QPoint
+from PyQt5.QtCore import QTimer, QPoint, QFileInfo
 import cv2
 import re
 from .forms.ui_camera_widget import Ui_CameraWidget
@@ -59,6 +59,7 @@ class CameraWidget(QWidget, Ui_CameraWidget):
     def init_ui(self):
         self.cameraList.setEnabled(False)
         self.pictureButton.setEnabled(False)
+        self.clearButton.setEnabled(False)
         self.inputText.setEnabled(False)
         self.imageLabel.setText("No camera feed")
 
@@ -71,7 +72,11 @@ class CameraWidget(QWidget, Ui_CameraWidget):
     def connect_signals(self):
         self.cameraList.currentRowChanged.connect(self.set_camera)
         self.pictureButton.clicked.connect(self.save_picture)
+        self.clearButton.clicked.connect(self.clear_input)
         self.inputText.textChanged.connect(self.update_label)
+
+    def clear_input(self):
+        self.inputText.clear()
 
     def set_save_directory(self):
         self.save_dir_name = str(
@@ -80,6 +85,7 @@ class CameraWidget(QWidget, Ui_CameraWidget):
         self.update_controls()
 
     def update_controls(self):
+        self.clearButton.setEnabled(self.cameraList.isEnabled())
         self.pictureButton.setEnabled(self.cameraList.isEnabled())
         self.inputText.setEnabled(self.cameraList.isEnabled())
 
@@ -130,14 +136,28 @@ class CameraWidget(QWidget, Ui_CameraWidget):
         match = self.check_serial_number()
         if match is not None:
             self.image_text = match.group(0)
-            save_path = self.image_text
+            image_name = self.image_text + ".png"
+            save_path = image_name
 
             if self.save_dir_name != "":
-                save_path = self.save_dir_name + "/" + self.image_text
+                save_path = self.save_dir_name + "/" + image_name
 
-            self.imageLabel.pixmap().save("%s.png" % save_path)
+            file_to_check = QFileInfo(save_path)
+
+            if file_to_check.exists() and file_to_check.isFile():
+                reply = QMessageBox.question(
+                    self, 'File already exists',
+                    'This file already exists. Do you want to overwrite it?',
+                    QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+
+                if reply == QMessageBox.No:
+                    self.main_window.statusBar().showMessage(
+                        'Save canceled for lens %s' % match.group(0))
+                    return
+
+            self.imageLabel.pixmap().save(save_path)
             self.main_window.statusBar().showMessage(
-                'Picture saved in %s.png' % save_path)
+                'Picture saved in %s' % save_path)
         else:
             self.main_window.statusBar().showMessage(
                 'Please enter a valid serial number before saving')

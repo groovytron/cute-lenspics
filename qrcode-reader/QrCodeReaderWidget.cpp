@@ -28,8 +28,6 @@ QrCodeReaderWidget::QrCodeReaderWidget(QWidget *parent) :
     expirationDateOutput->setTextInteractionFlags(Qt::TextSelectableByMouse);
     diopterOutput->setTextInteractionFlags(Qt::TextSelectableByMouse);
 
-    setWindowTitle("Lens Serial Number Reader");
-
     /* Connect signal to slots */
     connectEventHandlers();
 

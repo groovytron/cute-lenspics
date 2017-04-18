@@ -23,7 +23,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>CodeReaderWidget</string>
+   <string>Lens QR Code Reader</string>
   </property>
   <widget class="QWidget" name="layoutWidget">
    <property name="geometry">

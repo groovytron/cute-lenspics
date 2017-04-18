@@ -9,7 +9,7 @@ ui: $(FORMS)
 
 .PHONY: win-exe
 win-exe: clean ui
-	pyinstaller --name cute-lenspics --onefile --windowed main.py
+	pyinstaller --name lens-photomaton --onefile --windowed main.py
 
 .PHONY: clean
 clean:
