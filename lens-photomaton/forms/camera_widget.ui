@@ -25,7 +25,7 @@
   <property name="windowTitle">
    <string>Lens Photomaton</string>
   </property>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -79,7 +79,10 @@
       <item>
        <widget class="QPushButton" name="pictureButton">
         <property name="text">
-         <string>Take a picture</string>
+         <string>&amp;Take a picture</string>
+        </property>
+        <property name="shortcut">
+         <string>Ctrl+T</string>
         </property>
        </widget>
       </item>
