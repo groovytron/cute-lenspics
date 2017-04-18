@@ -1,6 +1,6 @@
 from PyQt5 import QtCore, QtGui, uic
-from PyQt5.QtWidgets import QMainWindow, QWidget, QListWidgetItem, QFileDialog
-from PyQt5.QtGui import QImage, QPixmap, QPainter, QFont, QColor
+from PyQt5.QtWidgets import QMainWindow, QWidget, QListWidgetItem, QFileDialog, QAction, qApp
+from PyQt5.QtGui import QImage, QPixmap, QPainter, QFont, QColor, QIcon
 from PyQt5.QtCore import QTimer, QPoint
 import cv2
 import re
@@ -16,8 +16,29 @@ class MainWindow(QMainWindow):
         self.statusBar().showMessage(
             'Choose a directory where pictures will be saved.')
         self.setWindowTitle('Lens Photomaton')
-        self.setCentralWidget(CameraWidget(self))
+        self.camera_widget = CameraWidget(self)
+        self.setCentralWidget(self.camera_widget)
+        self.create_menubar()
         self.show()
+
+    def create_menubar(self):
+        save_dir_action = QAction('Set &working directory', self)
+        save_dir_action.setShortcut('Ctrl+W')
+        save_dir_action.setStatusTip(
+            'Set the directory where pictures will be saved')
+        save_dir_action.triggered.connect(
+            self.camera_widget.set_save_directory)
+
+        exit_action = QAction('&Exit', self)
+        exit_action.setShortcut('Ctrl+Q')
+        exit_action.setStatusTip('Exit application')
+        exit_action.triggered.connect(qApp.quit)
+
+        menu_bar = self.menuBar()
+
+        file_menu = menu_bar.addMenu('&File')
+        file_menu.addAction(save_dir_action)
+        file_menu.addAction(exit_action)
 
 
 class CameraWidget(QWidget, Ui_CameraWidget):
@@ -35,9 +56,9 @@ class CameraWidget(QWidget, Ui_CameraWidget):
         # self.set_save_directory()
 
     def init_ui(self):
-        # self.cameraList.setEnabled(False)
-        # self.pictureButton.setEnabled(False)
-        self.inputText.setText("Enter a serial number")
+        self.cameraList.setEnabled(False)
+        self.pictureButton.setEnabled(False)
+        self.inputText.setEnabled(False)
         self.imageLabel.setText("No camera feed")
 
         cameras_count = self.count_cameras()
@@ -54,6 +75,19 @@ class CameraWidget(QWidget, Ui_CameraWidget):
     def set_save_directory(self):
         self.save_dir_name = str(
             QFileDialog.getExistingDirectory(self, "Select Directory"))
+        self.update_controls()
+
+    def update_controls(self):
+        self.cameraList.setEnabled(not self.cameraList.isEnabled())
+        self.pictureButton.setEnabled(self.cameraList.isEnabled())
+        self.inputText.setEnabled(self.cameraList.isEnabled())
+
+        if self.cameraList.isEnabled() and self.camera is not None:
+            self.inputText.setFocus()
+            self.main_window.statusBar().showMessage(
+                'You can now start scanning and save your pictures.')
+        else:
+            self.main_window.statusBar().showMessage('Choose a camera')
 
     def check_serial_number(self):
         return re.search('F\d{8}', self.inputText.text())
@@ -69,6 +103,8 @@ class CameraWidget(QWidget, Ui_CameraWidget):
 
     def set_camera(self, camera_id):
         self.camera = cv2.VideoCapture(camera_id)
+        self.main_window.statusBar().showMessage(
+            'You can now start scanning and save your pictures.')
         self.timer = QTimer()
         self.timer.timeout.connect(self.display_video_stream)
         self.timer.start(30)
@@ -98,8 +134,12 @@ class CameraWidget(QWidget, Ui_CameraWidget):
             if self.save_dir_name != "":
                 save_path = self.save_dir_name + "/" + self.image_text
 
-            self.imageLabel.pixmap().save("%s.png" %  save_path)
-            self.main_window.statusBar().showMessage('Picture saved in %s.png' % save_path)
+            self.imageLabel.pixmap().save("%s.png" % save_path)
+            self.main_window.statusBar().showMessage(
+                'Picture saved in %s.png' % save_path)
+        else:
+            self.main_window.statusBar().showMessage(
+                'Please enter a valid serial number before saving')
 
     def count_cameras(self):
         max_tested = 10

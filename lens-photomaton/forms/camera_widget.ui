@@ -25,63 +25,80 @@
   <property name="windowTitle">
    <string>Lens Photomaton</string>
   </property>
-  <widget class="QPushButton" name="pictureButton">
-   <property name="geometry">
-    <rect>
-     <x>800</x>
-     <y>280</y>
-     <width>121</width>
-     <height>27</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Take a picture</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="imageLabel">
+  <widget class="QWidget" name="">
    <property name="geometry">
     <rect>
      <x>10</x>
      <y>10</y>
-     <width>720</width>
-     <height>480</height>
+     <width>986</width>
+     <height>482</height>
     </rect>
    </property>
-   <property name="minimumSize">
-    <size>
-     <width>720</width>
-     <height>480</height>
-    </size>
-   </property>
-   <property name="maximumSize">
-    <size>
-     <width>720</width>
-     <height>480</height>
-    </size>
-   </property>
-   <property name="text">
-    <string>TextLabel</string>
-   </property>
-  </widget>
-  <widget class="QListWidget" name="cameraList">
-   <property name="geometry">
-    <rect>
-     <x>730</x>
-     <y>20</y>
-     <width>256</width>
-     <height>192</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="inputText">
-   <property name="geometry">
-    <rect>
-     <x>800</x>
-     <y>230</y>
-     <width>113</width>
-     <height>23</height>
-    </rect>
-   </property>
+   <layout class="QHBoxLayout" name="horizontalLayout_2">
+    <item>
+     <widget class="QLabel" name="imageLabel">
+      <property name="minimumSize">
+       <size>
+        <width>720</width>
+        <height>480</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>720</width>
+        <height>480</height>
+       </size>
+      </property>
+      <property name="text">
+       <string>TextLabel</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <widget class="QListWidget" name="cameraList"/>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <widget class="QLabel" name="label">
+          <property name="text">
+           <string>Serial Number:</string>
+          </property>
+          <property name="buddy">
+           <cstring>inputText</cstring>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="inputText"/>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pictureButton">
+        <property name="text">
+         <string>Take a picture</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="verticalSpacer">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>40</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </item>
+   </layout>
   </widget>
  </widget>
  <resources/>
