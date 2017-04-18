@@ -1,15 +1,29 @@
 from PyQt5 import QtCore, QtGui, uic
-from PyQt5.QtWidgets import QWidget, QListWidgetItem, QFileDialog
+from PyQt5.QtWidgets import QMainWindow, QWidget, QListWidgetItem, QFileDialog
 from PyQt5.QtGui import QImage, QPixmap, QPainter, QFont, QColor
 from PyQt5.QtCore import QTimer, QPoint
 import cv2
 import re
 from .forms.ui_camera_widget import Ui_CameraWidget
 
-class CameraWidget(QWidget, Ui_CameraWidget):
-    def __init__(self):
-        super(CameraWidget, self).__init__()
 
+class MainWindow(QMainWindow):
+    def __init__(self):
+        super().__init__()
+        self.initUI()
+
+    def initUI(self):
+        self.statusBar().showMessage(
+            'Choose a directory where pictures will be saved.')
+        self.setWindowTitle('Lens Photomaton')
+        self.setCentralWidget(CameraWidget(self))
+        self.show()
+
+
+class CameraWidget(QWidget, Ui_CameraWidget):
+    def __init__(self, main_window):
+        super(CameraWidget, self).__init__()
+        self.main_window = main_window
         self.camera = None
         self.video_process = None
         self.image_text = "No serial number found"
@@ -84,7 +98,8 @@ class CameraWidget(QWidget, Ui_CameraWidget):
             if self.save_dir_name != "":
                 save_path = self.save_dir_name + "/" + self.image_text
 
-            self.imageLabel.pixmap().save(save_path + ".png")
+            self.imageLabel.pixmap().save("%s.png" %  save_path)
+            self.main_window.statusBar().showMessage('Picture saved in %s.png' % save_path)
 
     def count_cameras(self):
         max_tested = 10

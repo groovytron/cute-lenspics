@@ -13,6 +13,6 @@ win-exe: clean ui
 
 .PHONY: clean
 clean:
-	rm -rf build dist $(UI_TARGET)$(UI_PREFIX)*.py
+	rm -rf build dist $(UI_TARGET)$(UI_PREFIX)*.py F*.png
 
 all: clean ui
