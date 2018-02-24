@@ -77,6 +77,7 @@ class CameraWidget(QWidget, Ui_CameraWidget):
 
     def clear_input(self):
         self.inputText.clear()
+        self.inputText.setFocus()
 
     def set_save_directory(self):
         self.save_dir_name = str(
@@ -101,6 +102,7 @@ class CameraWidget(QWidget, Ui_CameraWidget):
 
     def update_label(self, text):
         match = self.check_serial_number()
+        self.inputText.setText(text.upper())
 
         if match is not None:
             self.image_text = match.group(0)
@@ -158,9 +160,11 @@ class CameraWidget(QWidget, Ui_CameraWidget):
             self.imageLabel.pixmap().save(save_path)
             self.main_window.statusBar().showMessage(
                 'Picture saved in %s' % save_path)
+            self.clear_input()
         else:
             self.main_window.statusBar().showMessage(
                 'Please enter a valid serial number before saving')
+            self.inputText.setFocus()
 
     def count_cameras(self):
         max_tested = 10
