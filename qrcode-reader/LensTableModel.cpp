@@ -20,10 +20,7 @@ bool LensTableModel::addLens(Lens lens)
 {
     if (!this->lenses->contains(lens)) {
         this->lenses->append(lens);
-        QModelIndex topRight = createIndex(0, 0);
-        QModelIndex bottomLeft = createIndex(this->rowCount() - 1, this->columnCount() - 1);
         emit this->layoutChanged();
-        // emit this->dataChanged(topRight, bottomLeft);
         return true;
     }
     return false;
@@ -32,6 +29,12 @@ bool LensTableModel::addLens(Lens lens)
 QList<Lens> LensTableModel::getLenses()
 {
     return *(this->lenses);
+}
+
+void LensTableModel::clearLenses()
+{
+    this->lenses->clear();
+    emit this->layoutChanged();
 }
 
 QVariant LensTableModel::data(const QModelIndex& index, int role) const
@@ -67,9 +70,9 @@ QVariant LensTableModel::headerData(int section, Qt::Orientation orientation, in
                 case 0:
                     return tr("Serial Number");
                 case 1:
-                    return tr("Diopter");
+                    return tr("Dioptric Power");
                 case 2:
-                    return tr("Expiration Date");
+                    return tr("Expiry Date");
                 }
             }
         }

@@ -30,7 +30,7 @@
     <rect>
      <x>10</x>
      <y>10</y>
-     <width>715</width>
+     <width>839</width>
      <height>365</height>
     </rect>
    </property>
@@ -90,7 +90,7 @@
          <widget class="QPlainTextEdit" name="qrCodeInput">
           <property name="minimumSize">
            <size>
-            <width>0</width>
+            <width>200</width>
             <height>145</height>
            </size>
           </property>

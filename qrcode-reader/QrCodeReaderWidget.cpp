@@ -22,6 +22,7 @@ QrCodeReaderWidget::QrCodeReaderWidget(QWidget *parent) :
     lenses = new LensTableModel(0);
     tableView->setModel(lenses);
     tableView->horizontalHeader()->setStretchLastSection(true);
+    tableView->verticalHeader()->setFixedWidth(20);
 
     /* DEBUG: deactivate output labels at the moment */
     label->hide();
@@ -95,10 +96,23 @@ void QrCodeReaderWidget::updateOutputLabels()
             messageBox.setStandardButtons(QMessageBox::Ok);
             messageBox.exec();
         }
+        else {
+            this->qrCodeInput->clear();
+        }
     }
 }
 
 void QrCodeReaderWidget::clearQRCodeInput()
 {
     qrCodeInput->clear();
+}
+
+void QrCodeReaderWidget::clearLenses()
+{
+    this->lenses->clearLenses();
+}
+
+QList<Lens> QrCodeReaderWidget::getLenses()
+{
+    return this->lenses->getLenses();
 }

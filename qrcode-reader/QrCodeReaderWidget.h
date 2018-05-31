@@ -21,6 +21,8 @@ public:
     bool regexMatchesInQRInput(const QRegularExpression* regex);
     bool QRInputContainsALens();
     QString formatDiopter(QString string);
+    void clearLenses();
+    QList<Lens> getLenses();
 public slots:
     void updateOutputLabels();
     void clearQRCodeInput();
@@ -30,6 +32,7 @@ private:
     QRegularExpression* diopterRegex;
     static const QString OUTPUT_PLACEHOLDER;
     LensTableModel* lenses;
+
 
 };
 
