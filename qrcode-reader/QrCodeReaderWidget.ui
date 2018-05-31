@@ -6,20 +6,20 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>280</height>
+    <width>900</width>
+    <height>480</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>400</width>
-    <height>280</height>
+    <width>900</width>
+    <height>480</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>400</width>
-    <height>280</height>
+    <width>900</width>
+    <height>480</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -30,151 +30,171 @@
     <rect>
      <x>10</x>
      <y>10</y>
-     <width>381</width>
-     <height>262</height>
+     <width>715</width>
+     <height>365</height>
     </rect>
    </property>
-   <layout class="QVBoxLayout" name="verticalLayout">
+   <layout class="QHBoxLayout" name="horizontalLayout_5">
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout">
+     <layout class="QVBoxLayout" name="verticalLayout">
       <item>
-       <layout class="QVBoxLayout" name="verticalLayout_2">
+       <layout class="QHBoxLayout" name="horizontalLayout">
         <item>
-         <widget class="QLabel" name="seriaNumberLabel">
-          <property name="text">
-           <string>QR code content:</string>
-          </property>
-          <property name="buddy">
-           <cstring>qrCodeInput</cstring>
-          </property>
-         </widget>
+         <layout class="QVBoxLayout" name="verticalLayout_2">
+          <item>
+           <widget class="QLabel" name="seriaNumberLabel">
+            <property name="text">
+             <string>QR code content:</string>
+            </property>
+            <property name="buddy">
+             <cstring>qrCodeInput</cstring>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="clearBtn">
+            <property name="text">
+             <string>&amp;Clear</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="verticalSpacer_3">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
         </item>
         <item>
-         <widget class="QPushButton" name="clearBtn">
-          <property name="text">
-           <string>&amp;Clear</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <spacer name="verticalSpacer_3">
+         <spacer name="horizontalSpacer">
           <property name="orientation">
-           <enum>Qt::Vertical</enum>
+           <enum>Qt::Horizontal</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>
-            <width>20</width>
-            <height>40</height>
+            <width>40</width>
+            <height>20</height>
            </size>
           </property>
          </spacer>
         </item>
+        <item>
+         <widget class="QPlainTextEdit" name="qrCodeInput">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>145</height>
+           </size>
+          </property>
+         </widget>
+        </item>
        </layout>
       </item>
       <item>
-       <spacer name="horizontalSpacer">
+       <spacer name="verticalSpacer">
         <property name="orientation">
-         <enum>Qt::Horizontal</enum>
+         <enum>Qt::Vertical</enum>
         </property>
         <property name="sizeHint" stdset="0">
          <size>
-          <width>40</width>
-          <height>20</height>
+          <width>20</width>
+          <height>40</height>
          </size>
         </property>
        </spacer>
       </item>
       <item>
-       <widget class="QPlainTextEdit" name="qrCodeInput">
-        <property name="minimumSize">
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <widget class="QLabel" name="label">
+          <property name="text">
+           <string>Serial number:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="serialNumberOuput">
+          <property name="text">
+           <string>Output</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_4">
+        <item>
+         <widget class="QLabel" name="label_3">
+          <property name="text">
+           <string>Diopter:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="diopterOutput">
+          <property name="text">
+           <string>Output</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <item>
+         <widget class="QLabel" name="label_2">
+          <property name="text">
+           <string>Expiration date:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="expirationDateOutput">
+          <property name="text">
+           <string>Output</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <spacer name="verticalSpacer_2">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
          <size>
-          <width>0</width>
-          <height>145</height>
+          <width>20</width>
+          <height>40</height>
          </size>
         </property>
-       </widget>
+       </spacer>
       </item>
      </layout>
     </item>
     <item>
-     <spacer name="verticalSpacer">
-      <property name="orientation">
-       <enum>Qt::Vertical</enum>
-      </property>
-      <property name="sizeHint" stdset="0">
+     <widget class="QTableView" name="tableView">
+      <property name="minimumSize">
        <size>
-        <width>20</width>
-        <height>40</height>
+        <width>500</width>
+        <height>145</height>
        </size>
       </property>
-     </spacer>
-    </item>
-    <item>
-     <layout class="QHBoxLayout" name="horizontalLayout_2">
-      <item>
-       <widget class="QLabel" name="label">
-        <property name="text">
-         <string>Serial number:</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="serialNumberOuput">
-        <property name="text">
-         <string>Output</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </item>
-    <item>
-     <layout class="QHBoxLayout" name="horizontalLayout_4">
-      <item>
-       <widget class="QLabel" name="label_3">
-        <property name="text">
-         <string>Diopter:</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="diopterOutput">
-        <property name="text">
-         <string>Output</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </item>
-    <item>
-     <layout class="QHBoxLayout" name="horizontalLayout_3">
-      <item>
-       <widget class="QLabel" name="label_2">
-        <property name="text">
-         <string>Expiration date:</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="expirationDateOutput">
-        <property name="text">
-         <string>Output</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </item>
-    <item>
-     <spacer name="verticalSpacer_2">
-      <property name="orientation">
-       <enum>Qt::Vertical</enum>
-      </property>
-      <property name="sizeHint" stdset="0">
+      <property name="maximumSize">
        <size>
-        <width>20</width>
-        <height>40</height>
+        <width>500</width>
+        <height>500</height>
        </size>
       </property>
-     </spacer>
+     </widget>
     </item>
    </layout>
   </widget>

@@ -24,10 +24,14 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 
 SOURCES += main.cpp \
-    QrCodeReaderWidget.cpp
+    QrCodeReaderWidget.cpp \
+    LensTableModel.cpp \
+    lens.cpp
 
 HEADERS  += \
-    QrCodeReaderWidget.h
+    QrCodeReaderWidget.h \
+    LensTableModel.h \
+    lens.h
 
 FORMS    += \
     QrCodeReaderWidget.ui

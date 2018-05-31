@@ -1,9 +1,12 @@
 #include "QrCodeReaderWidget.h"
 #include "ui_QrCodeReaderWidget.h"
+#include "LensTableModel.h"
 
 #include <QPlainTextEdit>
 #include <QDebug>
 #include <QPushButton>
+#include <QDebug>
+#include <QMessageBox>
 
 const QString QrCodeReaderWidget::OUTPUT_PLACEHOLDER("Information not found");
 
@@ -12,6 +15,21 @@ QrCodeReaderWidget::QrCodeReaderWidget(QWidget *parent) :
 {
     /* Load the form */
     setupUi(this);
+
+    /* Table wiget */
+
+    /* Table View model variant */
+    lenses = new LensTableModel(0);
+    tableView->setModel(lenses);
+    tableView->horizontalHeader()->setStretchLastSection(true);
+
+    /* DEBUG: deactivate output labels at the moment */
+    label->hide();
+    label_2->hide();
+    label_3->hide();
+    serialNumberOuput->hide();
+    diopterOutput->hide();
+    expirationDateOutput->hide();
 
     /* Attributes setup */
     serialNumberRegex = new QRegularExpression("F\\d{8}");
@@ -40,23 +58,19 @@ QrCodeReaderWidget::~QrCodeReaderWidget()
 
 void QrCodeReaderWidget::connectEventHandlers()
 {
-    connect(qrCodeInput, &QPlainTextEdit::textChanged, this, &QrCodeReaderWidget::updateOutputLabel);
+    connect(qrCodeInput, &QPlainTextEdit::textChanged, this, &QrCodeReaderWidget::updateOutputLabels);
     connect(clearBtn, &QPushButton::clicked, this, &QrCodeReaderWidget::clearQRCodeInput);
 }
 
-void QrCodeReaderWidget::updateIfRegexMatches(const QRegularExpression* regex, QLabel* outputLabel)
+bool QrCodeReaderWidget::regexMatchesInQRInput(const QRegularExpression* regex)
 {
     const QString input = qrCodeInput->toPlainText();
-    QString match = regex->match(input).captured();
+    return regex->match(input).captured() != NULL;
+}
 
-    if (match != NULL)
-    {
-        outputLabel->setText(match);
-    }
-    else
-    {
-        outputLabel->setText(OUTPUT_PLACEHOLDER);
-    }
+bool QrCodeReaderWidget::QRInputContainsALens()
+{
+    return regexMatchesInQRInput(serialNumberRegex) && regexMatchesInQRInput(expirationDateCodeRegex) && regexMatchesInQRInput(diopterRegex);
 }
 
 QString QrCodeReaderWidget::formatDiopter(QString string)
@@ -64,13 +78,24 @@ QString QrCodeReaderWidget::formatDiopter(QString string)
     return string.remove(0, 1);
 }
 
-void QrCodeReaderWidget::updateOutputLabel()
+void QrCodeReaderWidget::updateOutputLabels()
 {
-    updateIfRegexMatches(serialNumberRegex, serialNumberOuput);
-    updateIfRegexMatches(expirationDateCodeRegex, expirationDateOutput);
+    if (QRInputContainsALens()) {
+        QString serialNumber = serialNumberRegex->match(qrCodeInput->toPlainText()).captured();
+        QString expirationDate = expirationDateCodeRegex->match(qrCodeInput->toPlainText()).captured();
+        QString diopter = diopterRegex->match(qrCodeInput->toPlainText()).captured();
 
-    QString match = diopterRegex->match(qrCodeInput->toPlainText()).captured();
-    diopterOutput->setText(match != NULL ? match.remove(0, 1) : OUTPUT_PLACEHOLDER);
+        Lens lens = Lens(serialNumber, diopter, expirationDate);
+
+        if (!this->lenses->addLens(lens)) {
+            QMessageBox messageBox;
+            messageBox.setText("Lens already exists.");
+            QString message = "Lens " + serialNumber + " is already in your list";
+            messageBox.setInformativeText(message);
+            messageBox.setStandardButtons(QMessageBox::Ok);
+            messageBox.exec();
+        }
+    }
 }
 
 void QrCodeReaderWidget::clearQRCodeInput()
