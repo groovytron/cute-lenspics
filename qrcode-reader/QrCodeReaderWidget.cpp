@@ -98,6 +98,7 @@ void QrCodeReaderWidget::updateOutputLabels()
         }
         else {
             this->qrCodeInput->clear();
+            this->qrCodeInput->setFocus();
         }
     }
 }
